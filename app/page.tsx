@@ -1,19 +1,16 @@
-import { Card } from "@/components/card";
 import { Nav } from "@/components/nav";
+import { ProductList } from "@/components/productList";
+import { getProducts } from "@/data/products";
+import { gqlRequest } from "@/lib/graphqlClient";
 
-export default function Home() {
+export default async function Home() {
+  const data = await gqlRequest(getProducts, { first: 12 });
+
   return (
     <>
       <Nav hasSearchBar={true} />
       <main>
-        <div className="mt-14 mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </div>
+        <ProductList products={data} />
       </main>
     </>
   );

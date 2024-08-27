@@ -1,26 +1,41 @@
-export const Card = () => {
+import Image from "next/image";
+
+type CardProps = {
+  price: number;
+  title: string;
+  image: {
+    url?: string;
+    altText?: string | null;
+  };
+};
+export const Card = ({ price, title, image }: CardProps) => {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm ">
       <div className="h-56 w-full hover:opacity-60 transition-opacity duration-800">
         <a href="#">
-          <img
+          <Image
             className="mx-auto h-full"
-            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
-            alt=""
+            height={200}
+            width={200}
+            src={
+              image.url ||
+              "https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
+            }
+            alt={image.altText || title}
           />
         </a>
       </div>
       <div className="pt-6">
         <a
           href="#"
-          className="text-lg font-semibold leading-tight text-gray-900 hover:underline "
+          className="text-lg font-semibold leading-tight text-gray-900 hover:underline min-h-10 block"
         >
-          Apple iMac 27&quot;, 1TB HDD, Retina 5K Display, M3 Max
+          {title}
         </a>
 
         <div className="mt-6 flex items-center justify-between gap-4">
           <p className="text-xl font-bold leading-tight text-gray-900">
-            $1,699
+            ${price}
           </p>
 
           <button
