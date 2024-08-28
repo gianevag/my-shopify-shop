@@ -1,30 +1,76 @@
 "use client";
 
 import { Card } from "../card";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getProducts } from "@/actions/products";
+import React, { useRef } from "react";
+import { useInfiniteScroll } from "@/lib/useInfiniteScroll";
 
 export const ProductList = () => {
-  const { data, error } = useQuery({
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const fetchMoreProducts = async ({ pageParam }: { pageParam: string }) => {
+    const data = await getProducts({ cursor: pageParam });
+    return data;
+  };
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ["products"],
-    queryFn: async () => getProducts(),
+    queryFn: fetchMoreProducts,
+    initialPageParam: "",
+    getNextPageParam: (lastPage) => {
+      if (lastPage.success?.products.pageInfo.hasNextPage === false) {
+        return null;
+      }
+      return lastPage.success?.products.pageInfo.endCursor;
+    },
   });
+
+  // when the target element is intersecting with the viewport then fetch the next page
+  useInfiniteScroll(
+    targetRef,
+    { root: null, rootMargin: "0px", threshold: 1 },
+    () => fetchNextPage()
+  );
 
   if (error) return <div>Error loading products</div>;
 
   return (
-    <div className="mt-14 mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-      {data?.success?.products.edges.map((product) => (
-        <Card
-          key={product.node.id}
-          title={product.node.title}
-          price={product.node.priceRangeV2.minVariantPrice.amount}
-          image={{
-            url: product.node.images.edges[0]?.node.url,
-            altText: product.node.images.edges[0]?.node.altText,
-          }}
-        />
-      ))}
-    </div>
+    <>
+      <div className="mt-14 mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+        {data?.pages.map((page, i) => {
+          return (
+            <React.Fragment key={i}>
+              {page.success?.products.edges.map(({ node }) => {
+                return (
+                  <Card
+                    key={node.id}
+                    title={node.title}
+                    price={node.priceRangeV2.minVariantPrice.amount}
+                    image={{
+                      url: node.images.edges[0].node.url,
+                      altText: node.images.edges[0].node.altText,
+                    }}
+                  />
+                );
+              })}
+            </React.Fragment>
+          );
+        })}
+      </div>
+      {isFetching ||
+        (hasNextPage && !isFetchingNextPage && (
+          <div className="text-center" ref={targetRef}>
+            Loading...
+          </div>
+        ))}
+    </>
   );
 };

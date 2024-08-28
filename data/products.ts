@@ -2,8 +2,8 @@ import { graphql } from '@/graphql'
 
 // use apollo graphql extension and 0no-co/graphqlsp extension
 export const getProducts = graphql(`
-   query products($first: Int = 10) { 
-    products(first: $first) { 
+   query products($first: Int = 10, $after: String) { 
+    products(first: $first, after: $after) { 
         edges {
             node {
                 id
@@ -24,6 +24,10 @@ export const getProducts = graphql(`
                     }
                 }
             }
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
         }
     }
 }`)

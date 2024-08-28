@@ -8,11 +8,17 @@ import {
 } from "@tanstack/react-query";
 
 export default async function Home() {
+  const fetchMoreProducts = async ({ pageParam }: { pageParam: string }) => {
+    const data = await getProducts({ cursor: pageParam });
+    return data;
+  };
+
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: ["products"],
-    queryFn: getProducts,
+    queryFn: fetchMoreProducts,
+    initialPageParam: "",
   });
 
   return (

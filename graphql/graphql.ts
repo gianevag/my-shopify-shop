@@ -52602,10 +52602,11 @@ export enum WeightUnit {
 
 export type ProductsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type ProductsQuery = { __typename?: 'QueryRoot', products: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node: { __typename?: 'Product', id: string, title: string, description: string, images: { __typename?: 'ImageConnection', edges: Array<{ __typename?: 'ImageEdge', node: { __typename?: 'Image', url: any, altText?: string | null } }> }, priceRangeV2: { __typename?: 'ProductPriceRangeV2', minVariantPrice: { __typename?: 'MoneyV2', amount: any, currencyCode: CurrencyCode } } } }> } };
+export type ProductsQuery = { __typename?: 'QueryRoot', products: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node: { __typename?: 'Product', id: string, title: string, description: string, images: { __typename?: 'ImageConnection', edges: Array<{ __typename?: 'ImageEdge', node: { __typename?: 'Image', url: any, altText?: string | null } }> }, priceRangeV2: { __typename?: 'ProductPriceRangeV2', minVariantPrice: { __typename?: 'MoneyV2', amount: any, currencyCode: CurrencyCode } } } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -52623,8 +52624,8 @@ export class TypedDocumentString<TResult, TVariables>
 }
 
 export const ProductsDocument = new TypedDocumentString(`
-    query products($first: Int = 10) {
-  products(first: $first) {
+    query products($first: Int = 10, $after: String) {
+  products(first: $first, after: $after) {
     edges {
       node {
         id
@@ -52645,6 +52646,10 @@ export const ProductsDocument = new TypedDocumentString(`
           }
         }
       }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
