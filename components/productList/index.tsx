@@ -1,14 +1,20 @@
-import { ProductsQuery } from "@/graphql/graphql";
+"use client";
+
 import { Card } from "../card";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/actions/products";
 
-type ProductListProps = {
-  products: ProductsQuery;
-};
+export const ProductList = () => {
+  const { data, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => getProducts(),
+  });
 
-export const ProductList = ({ products }: ProductListProps) => {
+  if (error) return <div>Error loading products</div>;
+
   return (
     <div className="mt-14 mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-      {products.products.edges.map((product) => (
+      {data?.success?.products.edges.map((product) => (
         <Card
           key={product.node.id}
           title={product.node.title}

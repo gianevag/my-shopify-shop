@@ -1,17 +1,26 @@
 import { Nav } from "@/components/nav";
 import { ProductList } from "@/components/productList";
-import { getProducts } from "@/data/products";
-import { gqlRequest } from "@/lib/graphqlClient";
+import { getProducts } from "@/actions/products";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
 export default async function Home() {
-  const data = await gqlRequest(getProducts, { first: 12 });
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
 
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <Nav hasSearchBar={true} />
       <main>
-        <ProductList products={data} />
+        <ProductList />
       </main>
-    </>
+    </HydrationBoundary>
   );
 }
