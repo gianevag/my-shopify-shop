@@ -1,18 +1,12 @@
 "use client";
 
 import { Card } from "../card";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getProducts } from "@/actions/products";
 import React, { useRef } from "react";
-import { useInfiniteScroll } from "@/lib/useInfiniteScroll";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useGetProducts } from "@/hooks/useGetProducts";
 
 export const ProductList = () => {
   const targetRef = useRef<HTMLDivElement>(null);
-
-  const fetchMoreProducts = async ({ pageParam }: { pageParam: string }) => {
-    const data = await getProducts({ cursor: pageParam });
-    return data;
-  };
 
   const {
     data,
@@ -21,17 +15,7 @@ export const ProductList = () => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["products"],
-    queryFn: fetchMoreProducts,
-    initialPageParam: "",
-    getNextPageParam: (lastPage) => {
-      if (lastPage.success?.products.pageInfo.hasNextPage === false) {
-        return null;
-      }
-      return lastPage.success?.products.pageInfo.endCursor;
-    },
-  });
+  } = useGetProducts();
 
   // when the target element is intersecting with the viewport then fetch the next page
   useInfiniteScroll(

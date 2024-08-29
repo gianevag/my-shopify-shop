@@ -1,4 +1,26 @@
-export const SearchInput = () => {
+"use client";
+
+import { debounce } from "@/lib/debounce";
+import { useMemo } from "react";
+
+type SearchinputProps = {
+  onDebouncedChange?: (arg: string) => void;
+};
+
+export const SearchInput = ({ onDebouncedChange }: SearchinputProps) => {
+  // we call the debounce function to useMemo to avoid creating a new function on every render
+  // and to avoid calling the debounce function on every render
+  const inputDebounce = useMemo(() => {
+    if (!onDebouncedChange) return () => {};
+
+    // the input values for the callback function is the same with the return function that use in handleInput
+    return debounce((i: string) => onDebouncedChange(i), 800);
+  }, []);
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    inputDebounce(e.target.value);
+  };
+
   return (
     <form className="w-full">
       <label
@@ -30,6 +52,7 @@ export const SearchInput = () => {
           id="default-search"
           className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 "
           placeholder="Search Products..."
+          onChange={handleInput}
         />
       </div>
     </form>

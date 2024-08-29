@@ -52603,6 +52603,7 @@ export enum WeightUnit {
 export type ProductsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
+  query?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -52624,8 +52625,8 @@ export class TypedDocumentString<TResult, TVariables>
 }
 
 export const ProductsDocument = new TypedDocumentString(`
-    query products($first: Int = 10, $after: String) {
-  products(first: $first, after: $after) {
+    query products($first: Int = 10, $after: String, $query: String) {
+  products(first: $first, after: $after, query: $query) {
     edges {
       node {
         id
