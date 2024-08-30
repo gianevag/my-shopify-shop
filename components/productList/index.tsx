@@ -28,7 +28,7 @@ export const ProductList = () => {
 
   return (
     <>
-      <div className="mt-14 mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="mt-6 mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
         {data?.pages.map((page, i) => {
           return (
             <React.Fragment key={i}>

@@ -28,21 +28,19 @@ export const Nav = ({ hasSearchBar }: NavProps) => {
     <nav className="bg-white antialiased">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-8">
-          <div className="shrink-0">
-            <a href="#" title="" className="">
-              <Image
-                width={200}
-                height={50}
-                className="block w-auto h-8"
-                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full.svg"
-                alt="logo"
-              />
-            </a>
-          </div>
+          <a href="#" title="" className="">
+            <Image
+              width={100}
+              height={20}
+              className="block w-auto h-28"
+              src="/logo/logo.png"
+              alt="logo"
+            />
+          </a>
         </div>
 
         {hasSearchBar && (
-          <div className="hidden md:block md:w-[60%]">
+          <div className="hidden md:block md:w-[70%]">
             <SearchInput onDebouncedChange={handleSearchInput} />
           </div>
         )}

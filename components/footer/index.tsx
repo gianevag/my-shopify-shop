@@ -1,27 +1,28 @@
+import Image from "next/image";
+
 export const Footer = () => {
   return (
     <footer className="p-4 bg-white sm:p-6">
       <div className="mx-auto max-w-screen-xl">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <a href="https://flowbite.com" className="flex items-center">
-              <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="mr-3 h-8"
-                alt="FlowBite Logo"
+            <a href="#" className="flex items-center">
+              <Image
+                width={100}
+                height={20}
+                className="block w-auto h-28 mr-8"
+                src="/logo/logo.png"
+                alt="logo"
               />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap">
-                Flowbite
-              </span>
             </a>
           </div>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
+        <hr className="mb-6 border-gray-200 sm:mx-auto lg:mt-2 lg:mb-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2022{" "}
-            <a href="https://flowbite.com" className="hover:underline">
-              Flowbite™
+            <a href="#" className="hover:underline">
+              My Shopify Shop
             </a>
             . All Rights Reserved.
           </span>
