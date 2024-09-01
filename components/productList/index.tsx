@@ -36,6 +36,7 @@ export const ProductList = () => {
                 return (
                   <Card
                     key={node.id}
+                    id={node.id}
                     title={node.title}
                     price={node.priceRangeV2.minVariantPrice.amount}
                     image={{

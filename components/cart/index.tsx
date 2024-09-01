@@ -1,9 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { remove } from "@/slides/cartSlide";
+import { useEffect, useState } from "react";
 
 export const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const items = useAppSelector((state) => state.cart.items);
+  const dispatcher = useAppDispatch();
+
+  useEffect(() => {
+    if (items.length === 0) setIsOpen(false);
+  }, [items]);
 
   return (
     <div className="relative">
@@ -11,7 +19,8 @@ export const Cart = () => {
         id="myCartDropdownButton1"
         data-dropdown-toggle="myCartDropdown1"
         type="button"
-        className="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 text-sm font-medium leading-none text-gray-900 "
+        className="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 text-sm font-medium leading-none text-gray-900 disabled:cursor-not-allowed disabled:text-gray-500 disabled:hover:bg-gray-100"
+        disabled={items.length === 0}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="sr-only">Cart</span>
@@ -58,53 +67,52 @@ export const Cart = () => {
             id="myCartDropdown1"
             className="absolute right-0 mt-2 w-72 z-10 mx-auto space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg"
           >
-            <div className="grid grid-cols-2">
-              <div>
-                <a
-                  href="#"
-                  className="truncate text-sm font-semibold leading-none text-gray-900 hover:underline"
-                >
-                  Apple iPhone 15
-                </a>
-                <p className="mt-0.5 truncate text-sm font-normal text-gray-500 ">
-                  $599
-                </p>
-              </div>
+            <div className="grid grid-cols-4">
+              {items.map((item) => (
+                <>
+                  <div className="col-span-3">
+                    <a
+                      href="#"
+                      className="truncate text-sm font-semibold leading-none text-gray-900 hover:underline block"
+                    >
+                      {item.title}
+                    </a>
+                    <p className="mt-0.5 truncate text-sm font-normal text-gray-500 ">
+                      ${item.price}
+                    </p>
+                  </div>
 
-              <div className="flex items-center justify-end gap-6">
-                <p className="text-sm font-normal leading-none text-gray-500 ">
-                  Qty: 1
-                </p>
-
-                <button
-                  data-tooltip-target="tooltipRemoveItem1a"
-                  type="button"
-                  className="text-red-600 hover:text-red-700"
-                >
-                  <svg
-                    className="h-4 w-4"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
+                  <div className="flex items-center justify-end">
+                    <button
+                      data-tooltip-target="tooltipRemoveItem1a"
+                      type="button"
+                      className="text-red-600 hover:text-red-700"
+                      onClick={() => dispatcher(remove(item))}
+                    >
+                      <svg
+                        className="h-4 w-4"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </>
+              ))}
             </div>
-
             <a
               href="#"
               title=""
               className="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
               role="button"
             >
-              {" "}
               Proceed to Checkout{" "}
             </a>
           </div>

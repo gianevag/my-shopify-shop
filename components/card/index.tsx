@@ -1,6 +1,9 @@
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { add } from "@/slides/cartSlide";
 import Image from "next/image";
 
 type CardProps = {
+  id: string;
   price: number;
   title: string;
   image: {
@@ -8,7 +11,9 @@ type CardProps = {
     altText?: string | null;
   };
 };
-export const Card = ({ price, title, image }: CardProps) => {
+export const Card = ({ id, price, title, image }: CardProps) => {
+  const dispatcher = useAppDispatch();
+
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm ">
       <div className="h-56 w-full hover:opacity-60 transition-opacity duration-800">
@@ -41,6 +46,7 @@ export const Card = ({ price, title, image }: CardProps) => {
           <button
             type="button"
             className="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300"
+            onClick={() => dispatcher(add({ id, price, title }))}
           >
             <svg
               className="-ms-2 me-2 h-5 w-5"
