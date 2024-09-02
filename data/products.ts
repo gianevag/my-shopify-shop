@@ -17,7 +17,14 @@ export const getProducts = graphql(`
                         }
                     }
                 }
-                priceRangeV2 {
+                variants(first: 1) {
+                    edges {
+                        node {
+                            id
+                        }
+                    }
+                }
+                priceRange {
                     minVariantPrice {
                         amount
                         currencyCode

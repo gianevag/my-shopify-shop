@@ -2,13 +2,13 @@ import { TypedDocumentString } from "@/graphql/graphql"
 import { GraphQLClient } from 'graphql-request'
 
 
-const endpoint = process.env.SHOPIFY_ADMIN_API_URL || ""
+const endpoint = process.env.SHOPIFY_STOREFRONT_API_URL || ""
 
 
 export const gqlClient = new GraphQLClient(endpoint, {
     headers: {
       "Content-Type": 'application/json',
-      "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_API_TOKEN || "",
+      "X-Shopify-Storefront-Access-Token": process.env.SHOPIFY_STOREFRONT_API_TOKEN || "",
   },
 })
 

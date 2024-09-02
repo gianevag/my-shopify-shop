@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "graphql:generate": "graphql-codegen --config codegen.ts"
+    "graphql:generate": "graphql-codegen --config codegen.ts --watch"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",

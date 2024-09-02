@@ -17,6 +17,9 @@ export const cartSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    initiate: (state) => {
+      state.items = [];
+    },
     add: (state, action: PayloadAction<CartItem>) => {
       if (state.items.some((item) => item.id === action.payload.id))
         return state;
@@ -28,7 +31,7 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { add, remove } = cartSlice.actions;
+export const { add, remove, initiate } = cartSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCart = (state: RootState) => state.cart.items;

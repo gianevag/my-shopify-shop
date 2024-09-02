@@ -1,13 +1,32 @@
 "use client";
 
+import { createCart } from "@/actions/cart";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { remove } from "@/slides/cartSlide";
+import { remove, initiate } from "@/slides/cartSlide";
+import { useMutation } from "@tanstack/react-query";
+import React from "react";
 import { useEffect, useState } from "react";
 
 export const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);
   const items = useAppSelector((state) => state.cart.items);
   const dispatcher = useAppDispatch();
+
+  const { data, mutate } = useMutation({
+    mutationFn: (ids: string[]) => {
+      return createCart({
+        lines: ids.map((id) => ({ merchandiseId: id, quantity: 1 })),
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      window.open(data.success?.cartCreate?.cart?.checkoutUrl, "_blank");
+    }
+    setIsOpen(false);
+    dispatcher(initiate());
+  }, [data]);
 
   useEffect(() => {
     if (items.length === 0) setIsOpen(false);
@@ -69,7 +88,7 @@ export const Cart = () => {
           >
             <div className="grid grid-cols-4">
               {items.map((item) => (
-                <>
+                <React.Fragment key={item.id}>
                   <div className="col-span-3">
                     <a
                       href="#"
@@ -104,17 +123,15 @@ export const Cart = () => {
                       </svg>
                     </button>
                   </div>
-                </>
+                </React.Fragment>
               ))}
             </div>
-            <a
-              href="#"
-              title=""
+            <button
               className="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
-              role="button"
+              onClick={() => mutate(items.map((item) => item.id))}
             >
               Proceed to Checkout{" "}
-            </a>
+            </button>
           </div>
         </>
       )}

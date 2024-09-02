@@ -36,9 +36,9 @@ export const ProductList = () => {
                 return (
                   <Card
                     key={node.id}
-                    id={node.id}
+                    id={node.variants.edges[0].node.id}
                     title={node.title}
-                    price={node.priceRangeV2.minVariantPrice.amount}
+                    price={node.priceRange.minVariantPrice.amount}
                     image={{
                       url: node.images.edges[0].node.url,
                       altText: node.images.edges[0].node.altText,
