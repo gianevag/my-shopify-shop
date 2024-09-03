@@ -9,6 +9,7 @@ export const getProducts = graphql(`
                 id
                 title
                 description
+                handle
                 images(first: 1) {
                     edges {
                         node {
@@ -40,3 +41,33 @@ export const getProducts = graphql(`
 }`)
 
 
+export const getProduct = graphql(`
+    query product($handle: String!) {
+        product(handle: $handle) {
+            id
+            title
+            description
+            handle
+            images(first: 1) {
+                edges {
+                    node {
+                        url
+                        altText
+                    }
+                }
+            }
+            priceRange {
+                minVariantPrice {
+                    amount
+                }
+            }
+            variants(first: 1) {
+                edges {
+                    node {
+                        id
+                    }
+                }
+            }
+        }
+    }
+`)

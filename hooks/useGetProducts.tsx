@@ -1,5 +1,5 @@
-import { getProducts } from "@/actions/products";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { getProduct, getProducts } from "@/actions/products";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 export const useGetProducts = (searchInput?: string) => {
   const fetchMoreProducts = async ({ pageParam }: { pageParam: string }) => {
@@ -20,6 +20,15 @@ export const useGetProducts = (searchInput?: string) => {
       }
       return lastPage.success?.products.pageInfo.endCursor;
     },
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+};
+
+export const useGetProduct = (handle: string) => {
+  return useQuery({
+    queryKey: ["product", handle],
+    queryFn: () => getProduct({ handle }),
     refetchOnWindowFocus: false,
     enabled: false,
   });

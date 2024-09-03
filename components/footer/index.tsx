@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const Footer = () => {
   return (
@@ -6,7 +7,7 @@ export const Footer = () => {
       <div className="mx-auto max-w-screen-xl">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <a href="#" className="flex items-center">
+            <Link href="/" className="flex items-center">
               <Image
                 width={100}
                 height={20}
@@ -14,7 +15,7 @@ export const Footer = () => {
                 src="/logo/logo.png"
                 alt="logo"
               />
-            </a>
+            </Link>
           </div>
         </div>
         <hr className="mb-6 border-gray-200 sm:mx-auto lg:mt-2 lg:mb-8" />

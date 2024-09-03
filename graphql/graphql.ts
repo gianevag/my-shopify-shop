@@ -8158,7 +8158,14 @@ export type ProductsQueryVariables = Exact<{
 }>;
 
 
-export type ProductsQuery = { __typename?: 'QueryRoot', products: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node: { __typename?: 'Product', id: string, title: string, description: string, images: { __typename?: 'ImageConnection', edges: Array<{ __typename?: 'ImageEdge', node: { __typename?: 'Image', url: any, altText?: string | null } }> }, variants: { __typename?: 'ProductVariantConnection', edges: Array<{ __typename?: 'ProductVariantEdge', node: { __typename?: 'ProductVariant', id: string } }> }, priceRange: { __typename?: 'ProductPriceRange', minVariantPrice: { __typename?: 'MoneyV2', amount: any, currencyCode: CurrencyCode } } } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type ProductsQuery = { __typename?: 'QueryRoot', products: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node: { __typename?: 'Product', id: string, title: string, description: string, handle: string, images: { __typename?: 'ImageConnection', edges: Array<{ __typename?: 'ImageEdge', node: { __typename?: 'Image', url: any, altText?: string | null } }> }, variants: { __typename?: 'ProductVariantConnection', edges: Array<{ __typename?: 'ProductVariantEdge', node: { __typename?: 'ProductVariant', id: string } }> }, priceRange: { __typename?: 'ProductPriceRange', minVariantPrice: { __typename?: 'MoneyV2', amount: any, currencyCode: CurrencyCode } } } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+
+export type ProductQueryVariables = Exact<{
+  handle: Scalars['String']['input'];
+}>;
+
+
+export type ProductQuery = { __typename?: 'QueryRoot', product?: { __typename?: 'Product', id: string, title: string, description: string, handle: string, images: { __typename?: 'ImageConnection', edges: Array<{ __typename?: 'ImageEdge', node: { __typename?: 'Image', url: any, altText?: string | null } }> }, priceRange: { __typename?: 'ProductPriceRange', minVariantPrice: { __typename?: 'MoneyV2', amount: any } }, variants: { __typename?: 'ProductVariantConnection', edges: Array<{ __typename?: 'ProductVariantEdge', node: { __typename?: 'ProductVariant', id: string } }> } } | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -8192,6 +8199,7 @@ export const ProductsDocument = new TypedDocumentString(`
         id
         title
         description
+        handle
         images(first: 1) {
           edges {
             node {
@@ -8222,3 +8230,33 @@ export const ProductsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ProductsQuery, ProductsQueryVariables>;
+export const ProductDocument = new TypedDocumentString(`
+    query product($handle: String!) {
+  product(handle: $handle) {
+    id
+    title
+    description
+    handle
+    images(first: 1) {
+      edges {
+        node {
+          url
+          altText
+        }
+      }
+    }
+    priceRange {
+      minVariantPrice {
+        amount
+      }
+    }
+    variants(first: 1) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ProductQuery, ProductQueryVariables>;

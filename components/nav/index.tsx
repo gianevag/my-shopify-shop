@@ -5,6 +5,7 @@ import { Cart } from "../cart";
 import { SearchInput } from "../searchInput";
 import Image from "next/image";
 import { useGetProducts } from "@/hooks/useGetProducts";
+import Link from "next/link";
 
 type NavProps = {
   hasSearchBar?: boolean;
@@ -28,7 +29,7 @@ export const Nav = ({ hasSearchBar }: NavProps) => {
     <nav className="bg-white antialiased">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-8">
-          <a href="#" title="" className="">
+          <Link href="/">
             <Image
               width={100}
               height={20}
@@ -36,7 +37,7 @@ export const Nav = ({ hasSearchBar }: NavProps) => {
               src="/logo/logo.png"
               alt="logo"
             />
-          </a>
+          </Link>
         </div>
 
         {hasSearchBar && (

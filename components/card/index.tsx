@@ -1,23 +1,25 @@
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { add } from "@/slides/cartSlide";
 import Image from "next/image";
+import Link from "next/link";
 
 type CardProps = {
   id: string;
   price: number;
   title: string;
+  handle: string;
   image: {
     url?: string;
     altText?: string | null;
   };
 };
-export const Card = ({ id, price, title, image }: CardProps) => {
+export const Card = ({ id, price, title, handle, image }: CardProps) => {
   const dispatcher = useAppDispatch();
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm ">
       <div className="h-56 w-full hover:opacity-60 transition-opacity duration-800">
-        <a href="#">
+        <Link href={`/product/${handle}`}>
           <Image
             className="mx-auto h-full"
             height={200}
@@ -28,15 +30,15 @@ export const Card = ({ id, price, title, image }: CardProps) => {
             }
             alt={image.altText || title}
           />
-        </a>
+        </Link>
       </div>
       <div className="pt-6">
-        <a
-          href="#"
+        <Link
+          href={`/product/${handle}`}
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline min-h-10 block"
         >
           {title}
-        </a>
+        </Link>
 
         <div className="mt-6 flex items-center justify-between gap-4">
           <p className="text-xl font-bold leading-tight text-gray-900">

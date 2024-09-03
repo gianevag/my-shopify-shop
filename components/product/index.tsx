@@ -1,23 +1,39 @@
-export const Product = () => {
+"use client";
+
+import { useGetProduct } from "@/hooks/useGetProducts";
+import Image from "next/image";
+
+type ProductProps = {
+  handle: string;
+};
+
+export const Product = ({ handle }: ProductProps) => {
+  const { data, error, isLoading } = useGetProduct(handle);
+  console.log(data, error, isLoading);
   return (
     <>
       <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
         <div className="shrink-0 max-w-md lg:max-w-lg mx-auto">
-          <img
+          <Image
             className="w-full dark:hidden"
-            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
-            alt=""
+            width={500}
+            height={500}
+            src={data?.success?.product?.images.edges[0].node.url}
+            alt={
+              data?.success?.product?.images.edges[0].node.altText ||
+              data?.success?.product?.title ||
+              ""
+            }
           />
         </div>
 
         <div className="mt-6 sm:mt-8 lg:mt-0">
           <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-            Apple iMac 24&quot; All-In-One Computer, Apple M1, 8GB RAM, 256GB
-            SSD, Mac OS, Pink
+            {data?.success?.product?.title}
           </h1>
           <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
             <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
-              $1,249.99
+              ${data?.success?.product?.priceRange?.minVariantPrice.amount}
             </p>
           </div>
 
@@ -52,15 +68,7 @@ export const Product = () => {
           <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
 
           <p className="mb-6 text-gray-500 dark:text-gray-400">
-            Studio quality three mic array for crystal clear calls and voice
-            recordings. Six-speaker sound system for a remarkably robust and
-            high-quality audio experience. Up to 256GB of ultrafast SSD storage.
-          </p>
-
-          <p className="text-gray-500 dark:text-gray-400">
-            Two Thunderbolt USB 4 ports and up to two USB 3 ports. Ultrafast
-            Wi-Fi 6 and Bluetooth 5.0 wireless. Color matched Magic Mouse with
-            Magic Keyboard or Magic Keyboard with Touch ID.
+            {data?.success?.product?.description}
           </p>
         </div>
       </div>
