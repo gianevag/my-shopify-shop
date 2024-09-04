@@ -15,10 +15,11 @@ export const Nav = ({ hasSearchBar }: NavProps) => {
   // Add the search input to the parent because we use the search input twice for defferent screen sizes
   // and if we add a react-query hook to the search input component, it will be called twice
   // so for performance reasons, we add the search input to the parent component
-  const [seachIput, setSearchInput] = useState("");
+  const [seachIput, setSearchInput] = useState<string | null>(null);
   const { refetch } = useGetProducts(seachIput);
+
   useEffect(() => {
-    refetch();
+    if (hasSearchBar && seachIput !== null) refetch();
   }, [seachIput]);
 
   const handleSearchInput = (input: string) => {

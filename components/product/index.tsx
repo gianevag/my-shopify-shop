@@ -9,7 +9,7 @@ type ProductProps = {
 
 export const Product = ({ handle }: ProductProps) => {
   const { data, error, isLoading } = useGetProduct(handle);
-  console.log(data, error, isLoading);
+
   return (
     <>
       <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">

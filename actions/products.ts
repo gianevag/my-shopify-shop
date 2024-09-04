@@ -4,7 +4,7 @@ import { gqlRequest } from "@/lib/graphqlClient";
 import { getProducts as _getProducts, getProduct as _getProduct} from "@/data/products";
 
 export const getProducts = async({ first = 10, cursor = "", search = "" }: {first?: number, cursor?: string, search?: string}) => { 
-    console.log("actions > products > getProducts");
+    console.log("actions > products > getProducts", { first, cursor, search });
     try {
         const data = await gqlRequest(_getProducts, { first, query: search, ...(cursor ? { after: cursor } : {}) });
         return {success: data, error: null};
@@ -15,7 +15,7 @@ export const getProducts = async({ first = 10, cursor = "", search = "" }: {firs
 }
 
 export const getProduct = async({ handle }: {handle: string}) => {
-    console.log("actions > products > getProduct");
+    console.log("actions > products > getProduct >", handle);
     try {
         const data = await gqlRequest(_getProduct, { handle });
         return {success: data, error: null};

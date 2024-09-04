@@ -1,7 +1,7 @@
 import { getProduct, getProducts } from "@/actions/products";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
-export const useGetProducts = (searchInput?: string) => {
+export const useGetProducts = (searchInput?: string | null) => {
   const fetchMoreProducts = async ({ pageParam }: { pageParam: string }) => {
     const data = await getProducts({
       cursor: pageParam,
