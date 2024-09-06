@@ -9,3 +9,4 @@ My Shopify Shop
 5. UI Library: Flowbite e-commerce UI kit
 6. State Management: Redux for cart state
 
+[Demo](https://my-shopify-shop.vercel.app/)
