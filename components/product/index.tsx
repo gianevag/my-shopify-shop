@@ -1,6 +1,9 @@
 "use client";
 
+import { useAppDispatch } from "@/hooks/reduxHooks";
 import { useGetProduct } from "@/hooks/useGetProducts";
+import { CartItem } from "@/lib/types";
+import { add } from "@/slides/cartSlide";
 import Image from "next/image";
 
 type ProductProps = {
@@ -8,7 +11,16 @@ type ProductProps = {
 };
 
 export const Product = ({ handle }: ProductProps) => {
-  const { data, error, isLoading } = useGetProduct(handle);
+  const { data, error } = useGetProduct(handle);
+  const dispatcher = useAppDispatch();
+
+  const cartItem: CartItem = {
+    id: data?.success?.product?.variants.edges[0].node.id || "",
+    price: data?.success?.product?.priceRange?.minVariantPrice.amount,
+    title: data?.success?.product?.title || "",
+  };
+
+  if (error) return <div>Error loading product</div>;
 
   return (
     <>
@@ -38,11 +50,9 @@ export const Product = ({ handle }: ProductProps) => {
           </div>
 
           <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-            <a
-              href="#"
-              title=""
+            <button
               className="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
-              role="button"
+              onClick={() => dispatcher(add(cartItem))}
             >
               <svg
                 className="w-5 h-5 -ms-2 me-2"
@@ -62,7 +72,7 @@ export const Product = ({ handle }: ProductProps) => {
                 />
               </svg>
               Add to cart
-            </a>
+            </button>
           </div>
 
           <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />

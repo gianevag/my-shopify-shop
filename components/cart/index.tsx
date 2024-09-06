@@ -12,21 +12,22 @@ export const Cart = () => {
   const items = useAppSelector((state) => state.cart.items);
   const dispatcher = useAppDispatch();
 
-  const { data, mutate } = useMutation({
-    mutationFn: (ids: string[]) => {
-      return createCart({
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (ids: string[]) => {
+      const res = await createCart({
         lines: ids.map((id) => ({ merchandiseId: id, quantity: 1 })),
       });
+      return res;
+    },
+    onSuccess: (result) => {
+      setIsOpen(false);
+      dispatcher(initiate());
+      window.open(result.success?.cartCreate?.cart?.checkoutUrl, "_blank");
+    },
+    onError: (error) => {
+      console.error(error);
     },
   });
-
-  useEffect(() => {
-    if (data) {
-      window.open(data.success?.cartCreate?.cart?.checkoutUrl, "_blank");
-    }
-    setIsOpen(false);
-    dispatcher(initiate());
-  }, [data]);
 
   useEffect(() => {
     if (items.length === 0) setIsOpen(false);
@@ -129,8 +130,9 @@ export const Cart = () => {
             <button
               className="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
               onClick={() => mutate(items.map((item) => item.id))}
+              disabled={isPending}
             >
-              Proceed to Checkout{" "}
+              Proceed to Checkout
             </button>
           </div>
         </>
